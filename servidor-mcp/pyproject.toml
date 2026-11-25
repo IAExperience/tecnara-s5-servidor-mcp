@@ -1,0 +1,14 @@
+[project]
+name = "servidor-mcp"
+version = "0.1.0"
+description = "Servidor MCP y RAG de la startup (S5 · Construye con IA · Tecnara)"
+requires-python = ">=3.11"
+dependencies = [
+    # 1.x a propósito: es la del curso oficial (FastMCP, `mcp dev`). En la 2.x FastMCP pasa a llamarse MCPServer.
+    "mcp[cli]>=1.30,<2",
+    "anthropic>=2.14,<3",
+    "python-dotenv>=1.0",
+    # Embeddings: cada equipo usa uno de los dos (EMBEDDINGS en .env)
+    "google-genai>=3.6,<4",
+    "voyageai>=0.6",
+]

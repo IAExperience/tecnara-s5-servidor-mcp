@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "startup": {
+      "type": "stdio",
+      "command": "uv",
+      "args": ["run", "--directory", "servidor-mcp", "servidor.py"]
+    }
+  }
+}
