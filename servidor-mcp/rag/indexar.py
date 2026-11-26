@@ -49,11 +49,15 @@ def embeber(textos: list[str], tipo: str) -> list[list[float]]:
         if proveedor == "gemini":
             from google import genai
             from google.genai import types
-            r = genai.Client(api_key=os.getenv("GEMINI_API_KEY")).models.embed_content(
-                model="gemini-embedding-001", contents=lote,
-                config=types.EmbedContentConfig(
-                    task_type="RETRIEVAL_DOCUMENT" if tipo == "documento" else "RETRIEVAL_QUERY",
-                    output_dimensionality=768))
+            # Gemini Embedding 2 no usa task_type: el tipo va como prefijo en el propio texto.
+            # Cada texto en su propio Content: una lista de textos sueltos daría UN solo vector para todos.
+            prefijo = (lambda t: f"title: {t.split(chr(10), 1)[0]} | text: {t}") if tipo == "documento" \
+                else (lambda t: f"task: search result | query: {t}")
+            cliente = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))  # en variable: si no, se cierra antes de la llamada
+            r = cliente.models.embed_content(
+                model="gemini-embedding-2",
+                contents=[types.Content(parts=[types.Part.from_text(text=prefijo(t))]) for t in lote],
+                config=types.EmbedContentConfig(output_dimensionality=768))
             vectores += [e.values for e in r.embeddings]
         elif proveedor == "voyage":
             import voyageai

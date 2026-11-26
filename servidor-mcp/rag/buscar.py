@@ -18,7 +18,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from indexar import INDICE, embeber  # noqa: E402
 
-UMBRAL = 0.55   # similitud mínima para que un trozo cuente como «parecido». ❓ Ajustadlo con vuestras preguntas
+UMBRAL = 0.70   # similitud mínima para que un trozo cuente como «parecido» (Gemini Embedding 2: con respuesta ≈0,73–0,79; sin ella ≈0,55–0,67). Ajustadlo con vuestras preguntas
 # Palabras que salen en casi todo y no ayudan a encontrar nada
 VACIAS = set("de la el los las un una unos unas y o en que por para con sin del al se es lo le su sus mi "
              "como cual cuanto cuanta cuantos que quien donde cuando hay tiene hace esta este esto".split())
