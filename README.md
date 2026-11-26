@@ -21,3 +21,4 @@ Claude lo copia a vuestro repo sin tocar vuestra web. Lo demás se hace en clase
 - `servidor-mcp/ejemplo/`: specs inventados de una startup ficticia, para probar, y `web/index.html`, un formulario de contacto que avisa a un webhook de n8n (la demo del formador).
 
 Las claves van en `servidor-mcp/.env`, que nunca se sube a GitHub.
+- `skills/prompt-mejorado/`: un regalo de Alessandro, la skill que convierte ideas sueltas en un prompt profesional. Para instalarla, pedídselo a Claude Code con el prompt de la sesión.
