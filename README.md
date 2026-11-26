@@ -18,6 +18,6 @@ Claude lo copia a vuestro repo sin tocar vuestra web. Lo demás se hace en clase
 
 - `servidor-mcp/servidor.py`: servidor MCP de ejemplo (tools, resources y un prompt). En la práctica 1 lo adaptáis a vuestra startup.
 - `servidor-mcp/rag/`: indexar, buscar y preguntar con citas. En la práctica 2 escribís la función `rrf()`.
-- `servidor-mcp/ejemplo/`: specs inventados de una startup ficticia, para probar.
+- `servidor-mcp/ejemplo/`: specs inventados de una startup ficticia, para probar, y `web/index.html`, un formulario de contacto que avisa a un webhook de n8n (la demo del formador).
 
 Las claves van en `servidor-mcp/.env`, que nunca se sube a GitHub.

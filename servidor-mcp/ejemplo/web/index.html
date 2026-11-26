@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cierzo Labs · Contacto</title>
+<!-- Demo de la práctica de n8n (S5): al enviar el formulario, avisa a un webhook de n8n.
+     Pega la URL de tu webhook en WEBHOOK y abre la página con Live Server. -->
+<style>
+  :root { color-scheme: light; --tinta: #14213d; --acento: #2a6f97; --error: #b3261e; }
+  body { margin: 0; font: 17px/1.5 system-ui, sans-serif; color: var(--tinta); background: #f4f7fa; }
+  main { max-width: 34rem; margin: 3rem auto; padding: 0 1.25rem; }
+  h1 { margin: 0 0 .25rem; font-size: 2rem; }
+  p { margin: 0 0 1.5rem; }
+  label { display: block; font-weight: 600; margin: 1rem 0 .35rem; }
+  input, textarea { width: 100%; box-sizing: border-box; font: inherit; padding: .65rem .8rem;
+    border: 1px solid #9fb3c8; border-radius: .5rem; background: #fff; }
+  input:user-invalid, textarea:user-invalid { border-color: var(--error); }
+  :focus-visible { outline: 3px solid var(--acento); outline-offset: 2px; }
+  button { margin-top: 1.25rem; font: inherit; font-weight: 600; color: #fff; background: var(--acento);
+    border: 0; border-radius: .5rem; padding: .7rem 1.4rem; cursor: pointer; }
+  button:disabled { opacity: .6; cursor: progress; }
+  #estado { margin-top: 1rem; min-height: 1.5em; }
+  #estado.mal { color: var(--error); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Hablemos</h1>
+  <p>Cierzo Labs hace webs para comercios de barrio en Zaragoza. Cuéntanos qué necesitas.</p>
+  <form id="contacto">
+    <label for="nombre">Nombre</label>
+    <input id="nombre" name="nombre" autocomplete="name" required>
+    <label for="correo">Correo</label>
+    <input id="correo" name="correo" type="email" autocomplete="email" required>
+    <label for="mensaje">Mensaje</label>
+    <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+    <button type="submit">Enviar</button>
+    <p id="estado" role="status"></p>
+  </form>
+</main>
+<script>
+  // La URL del nodo Webhook de tu flujo de n8n (cópiala, no la escribas a mano)
+  const WEBHOOK = "";
+
+  const form = document.getElementById("contacto");
+  const estado = document.getElementById("estado");
+  const aviso = (texto, mal = false) => { estado.textContent = texto; estado.classList.toggle("mal", mal); };
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!WEBHOOK) return aviso("Falta la URL del webhook: pégala en WEBHOOK, dentro de este fichero.", true);
+    const boton = form.querySelector("button");
+    boton.disabled = true;
+    aviso("Enviando…");
+    try {
+      const r = await fetch(WEBHOOK, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Object.fromEntries(new FormData(form))),
+      });
+      if (!r.ok) throw new Error(`n8n respondió ${r.status}`);
+      form.reset();
+      aviso("¡Recibido! Te contestamos pronto.");
+    } catch (err) {
+      // Si es un error de CORS: en el nodo Webhook, «Allowed origins» = * (solo para la práctica)
+      aviso(`No se ha podido enviar (${err.message}). Mira la consola del navegador.`, true);
+    } finally {
+      boton.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>
